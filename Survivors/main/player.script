@@ -1,0 +1,64 @@
+go.property("move_speed", 250)
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	-- The direction the player is facing.
+	self.direction = vmath.vector3()
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Ensure diagonal movement is same speed as orthoganal movement.
+	if vmath.length(self.direction) > 1 then
+		self.direction = vmath.normalize(self.direction)
+	end
+
+	-- Move the player.
+	local position = go.get_position()
+	position = position + (self.direction * self.move_speed * dt)
+	go.set_position(position)
+
+	-- Reset direction vector for next frame.
+	self.direction = vmath.vector3()
+end
+
+function fixed_update(self, dt)
+	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
+	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
+	-- Physics section of game.project
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Learn more: https://defold.com/manuals/message-passing/
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("move_left") then
+		self.direction.x = -1
+	elseif action_id == hash("move_right") then
+		self.direction.x = 1
+	elseif action_id == hash("move_down") then
+		self.direction.y = -1
+	elseif action_id == hash("move_up") then
+		self.direction.y = 1
+	end
+
+	-- Do not consume input.
+	return false
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

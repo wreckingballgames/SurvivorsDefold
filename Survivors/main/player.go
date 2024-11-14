@@ -1,3 +1,12 @@
+components {
+  id: "player"
+  component: "/main/player.script"
+  properties {
+    id: "move_speed"
+    value: "150.0"
+    type: PROPERTY_TYPE_NUMBER
+  }
+}
 embedded_components {
   id: "collisionobject"
   type: "collisionobject"
