@@ -4,4 +4,5 @@ animations {
     image: "/assets/graphics/sprites/knight.png"
   }
   playback: PLAYBACK_LOOP_FORWARD
+  fps: 0
 }
