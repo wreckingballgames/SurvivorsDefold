@@ -1,5 +1,8 @@
 go.property("move_speed", 250)
 
+-- Constants
+local GAME_CAMERA_URL = msg.url("main:/game_camera")
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	-- The direction the player is facing.
@@ -22,6 +25,9 @@ function update(self, dt)
 	local position = go.get_position()
 	position = position + (self.direction * self.move_speed * dt)
 	go.set_position(position)
+
+	-- Tell game camera to update its position.
+	msg.post(GAME_CAMERA_URL, "reposition", { position = go.get_position() })
 
 	-- Reset direction vector for next frame.
 	self.direction = vmath.vector3()

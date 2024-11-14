@@ -7,6 +7,14 @@ instances {
     y: 144.0
   }
 }
+instances {
+  id: "game_camera"
+  prototype: "/main/game_camera.go"
+  position {
+    x: 233.0
+    y: 144.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "arena"
