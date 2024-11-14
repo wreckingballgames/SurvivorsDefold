@@ -1,0 +1,7 @@
+animations {
+  id: "player"
+  images {
+    image: "/assets/graphics/sprites/knight.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+}
