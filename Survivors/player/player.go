@@ -1,6 +1,6 @@
 components {
   id: "player"
-  component: "/main/player.script"
+  component: "/player/player.script"
   properties {
     id: "move_speed"
     value: "150.0"
