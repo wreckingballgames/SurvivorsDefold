@@ -1,3 +1,4 @@
+-- Properties
 go.property("move_speed", 250)
 
 -- Constants
