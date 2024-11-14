@@ -6,3 +6,11 @@ animations {
   playback: PLAYBACK_LOOP_FORWARD
   fps: 0
 }
+animations {
+  id: "basic_enemy"
+  images {
+    image: "/assets/graphics/sprites/rat.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 0
+}

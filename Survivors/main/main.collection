@@ -15,6 +15,14 @@ instances {
     y: 144.0
   }
 }
+instances {
+  id: "basic_enemy"
+  prototype: "/enemies/basic_enemy.go"
+  position {
+    x: 79.0
+    y: 72.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "arena"

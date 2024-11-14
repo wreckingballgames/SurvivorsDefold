@@ -3,6 +3,8 @@ go.property("move_speed", 250)
 
 -- Constants
 local GAME_CAMERA_URL = msg.url("main:/game_camera")
+-- TODO: Dynamically get enemy URLs from messages from enemy factory
+local ENEMY_URL = msg.url("main:/basic_enemy")
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
@@ -28,7 +30,8 @@ function update(self, dt)
 	go.set_position(position)
 
 	-- Tell game camera to update its position.
-	msg.post(GAME_CAMERA_URL, "reposition", { position = go.get_position() })
+	msg.post(GAME_CAMERA_URL, "reposition", { position = position })
+	msg.post(ENEMY_URL, "acquire_new_target", { target_position = position })
 
 	-- Reset direction vector for next frame.
 	self.direction = vmath.vector3()
