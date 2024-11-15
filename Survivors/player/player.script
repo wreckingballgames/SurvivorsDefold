@@ -50,6 +50,16 @@ local function announce_position(self)
 	end
 end
 
+local function sort_nearby_enemies(self)
+	local player_position = go.get_position()
+
+	local function sort_by_distance_from_player(a, b)
+		return (vmath.length_sqr(go.get_position(a) - player_position)) < vmath.length_sqr((go.get_position(b) - player_position))
+	end
+
+	table.sort(self.nearby_enemies, sort_by_distance_from_player)
+end
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
@@ -78,6 +88,7 @@ function update(self, dt)
 	announce_position(self)
 
 	tick_ability_cooldowns(self, dt)
+	sort_nearby_enemies(self)
 	handle_abilities(self)
 end
 
