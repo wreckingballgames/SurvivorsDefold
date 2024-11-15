@@ -1,0 +1,8 @@
+function die()
+    go.delete()
+end
+
+function init()
+    -- Play animation then die
+    go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 90, go.EASING_INOUTCUBIC, 0.5, 0, die)
+end
