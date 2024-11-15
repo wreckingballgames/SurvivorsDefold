@@ -10,6 +10,7 @@ embedded_components {
   "friction: 0.1\n"
   "restitution: 0.5\n"
   "group: \"enemies\"\n"
+  "mask: \"players\"\n"
   "mask: \"enemies\"\n"
   "mask: \"player_abilities\"\n"
   "mask: \"enemy_detector\"\n"
@@ -23,8 +24,9 @@ embedded_components {
   "    index: 0\n"
   "    count: 1\n"
   "  }\n"
-  "  data: 7.3239436\n"
+  "  data: 8.0\n"
   "}\n"
+  "locked_rotation: true\n"
   ""
 }
 embedded_components {

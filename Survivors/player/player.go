@@ -21,6 +21,7 @@ embedded_components {
   "restitution: 0.5\n"
   "group: \"players\"\n"
   "mask: \"terrain\"\n"
+  "mask: \"enemies\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_SPHERE\n"
@@ -79,5 +80,6 @@ embedded_components {
   "  }\n"
   "  data: 60.0\n"
   "}\n"
+  "locked_rotation: true\n"
   ""
 }
