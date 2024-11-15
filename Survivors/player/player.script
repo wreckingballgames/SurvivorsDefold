@@ -18,9 +18,16 @@ local function tick_ability_cooldowns(self, dt)
 end
 
 local function handle_abilities(self)
+	local target_id = go.get_id()
+	-- Get ID of an enemy if there are any nearby
+	for id, pos in pairs(self.nearby_enemies) do
+		target_id = hash(id)
+		break
+	end
+
 	-- Sword ability
 	if self.sword_ability_cooldown <= 0 and self.has_sword_ability then
-		factory.create("#sword_ability_factory", go.get_position())
+		factory.create("#sword_ability_factory", go.get_position(target_id))
 		self.sword_ability_cooldown = self.sword_ability_base_cooldown + self.sword_ability_cooldown_modifier
 	end
 end
@@ -77,11 +84,9 @@ function on_message(self, message_id, message, sender)
 		local other_is_enemy = message.other_group == hash("enemies")
 		local other_id = message.other_id
 		if other_is_enemy and message.enter then
-			self.nearby_enemies.other_id = go.get_position(other_id)
-			print(self.nearby_enemies)
+			self.nearby_enemies[other_id] = go.get_position(other_id)
 		elseif other_is_enemy and not message.enter then
-			self.nearby_enemies.other_id = nil
-			print(self.nearby_enemies)
+			self.nearby_enemies[other_id] = nil
 		end
 	end
 end
