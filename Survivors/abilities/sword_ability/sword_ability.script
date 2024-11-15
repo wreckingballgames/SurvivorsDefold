@@ -1,4 +1,4 @@
-function die()
+local function die()
     go.delete()
 end
 

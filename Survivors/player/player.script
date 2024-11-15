@@ -9,8 +9,40 @@ local GAME_CAMERA_URL = msg.url("main:/game_camera")
 -- TODO: Dynamically get enemy URLs from messages from enemy factory
 local ENEMY_URL = msg.url("main:/basic_enemy")
 
+local function tick_ability_cooldowns(self, dt)
+	self.sword_ability_cooldown = self.sword_ability_cooldown - dt
+end
+
+local function handle_abilities(self)
+	-- Sword ability
+	if self.sword_ability_cooldown <= 0 and self.has_sword_ability then
+		factory.create("#sword_ability_factory", go.get_position())
+		self.sword_ability_cooldown = self.sword_ability_base_cooldown + self.sword_ability_cooldown_modifier
+	end
+end
+
+local function move(self, dt)
+	-- Ensure diagonal movement is same speed as orthoganal movement.
+	if vmath.length_sqr(self.direction) > 1 then
+		self.direction = vmath.normalize(self.direction)
+	end
+
+	-- Move the player.
+	go.set_position(go.get_position() + (self.direction * self.move_speed * dt))
+
+	-- Reset direction vector for next frame.
+	self.direction = vmath.vector3()
+end
+
+local function announce_position()
+	local position = go.get_position()
+	msg.post(GAME_CAMERA_URL, "reposition", { position = position })
+	msg.post(ENEMY_URL, "acquire_new_target", { target_position = position })
+end
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
+
 	-- The direction the player is facing.
 	self.direction = vmath.vector3()
 	-- The sword ability's cooldown period in seconds.
@@ -20,30 +52,11 @@ function init(self)
 end
 
 function update(self, dt)
-	-- Ensure diagonal movement is same speed as orthoganal movement.
-	if vmath.length(self.direction) > 1 then
-		self.direction = vmath.normalize(self.direction)
-	end
+	move(self, dt)
+	announce_position()
 
-	-- Move the player.
-	local position = go.get_position()
-	position = position + (self.direction * self.move_speed * dt)
-	go.set_position(position)
-
-	-- Tell game camera to update its position.
-	msg.post(GAME_CAMERA_URL, "reposition", { position = position })
-	msg.post(ENEMY_URL, "acquire_new_target", { target_position = position })
-
-	-- Handle sword ability
-	if self.sword_ability_cooldown <= 0 and self.has_sword_ability then
-		factory.create("#sword_ability_factory", go.get_position())
-		self.sword_ability_cooldown = self.sword_ability_base_cooldown + self.sword_ability_cooldown_modifier
-	end
-
-	self.sword_ability_cooldown = self.sword_ability_cooldown - dt
-
-	-- Reset direction vector for next frame.
-	self.direction = vmath.vector3()
+	tick_ability_cooldowns(self, dt)
+	handle_abilities(self)
 end
 
 function on_input(self, action_id, action)
