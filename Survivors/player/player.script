@@ -7,6 +7,8 @@ go.property("has_sword_ability", true)
 go.property("sword_ability_base_cooldown", 3)
 -- The diameter of the collision shape (a sphere) used to detect enemies in range. Change on the collision shape to preview.
 go.property("enemy_detector_diameter", 60)
+-- The player's base max HP.
+go.property("base_hp", 15)
 
 -- Constants
 local GAME_CAMERA_URL = msg.url("main:/game_camera")
@@ -61,6 +63,17 @@ local function announce_position(self)
 	end
 end
 
+local function die(self)
+	go.delete()
+	for index = 1, #self.death_listener_URLs do
+		msg.post(self.death_listener_URLs[index], "player_died")
+	end
+end
+
+local function take_damage(self, damage)
+	self.hp = self.hp - damage
+end
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
@@ -82,6 +95,13 @@ function init(self)
 	-- The list of URLs to post messages about position updates to.
 	self.position_listener_URLs = {}
 	table.insert(self.position_listener_URLs, GAME_CAMERA_URL)
+	-- The list of URLs to post death message to.
+	self.death_listener_URLs = {}
+	table.insert(self.death_listener_URLs, GAME_CAMERA_URL)
+	-- Set starting HP.
+	self.hp = self.base_hp
+	-- How much damage touching enemies causes.
+	self.enemy_touch_damage = 1
 end
 
 function update(self, dt)
@@ -90,6 +110,10 @@ function update(self, dt)
 
 	tick_ability_cooldowns(self, dt)
 	handle_abilities(self)
+
+	if self.hp <= 0 then
+		die(self)
+	end
 end
 
 function on_message(self, message_id, message, sender)
@@ -106,6 +130,7 @@ function on_message(self, message_id, message, sender)
 		end
 	elseif message_id == hash("enemy_spawned") then
 		table.insert(self.position_listener_URLs, message.enemy_url)
+		table.insert(self.death_listener_URLs, message.enemy_url)
 	elseif message_id == hash("enemy_died") then
 		for index = 1, #self.position_listener_URLs do
 			if self.position_listener_URLs[index] == message.enemy_url then
@@ -113,6 +138,8 @@ function on_message(self, message_id, message, sender)
 			end
 		end
 		self.nearby_enemies[message.enemy_id] = nil
+	elseif message_id == hash("touched_by_enemy") then
+		take_damage(self, self.enemy_touch_damage)
 	end
 end
 

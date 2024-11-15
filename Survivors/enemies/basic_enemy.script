@@ -50,5 +50,13 @@ function on_message(self, message_id, message, sender)
 				self.correction = self.correction + compensation
 			end
 		end
+	elseif message_id == hash("trigger_response") then
+		local other_group = message.other_group
+		local other_id = message.other_id
+
+		-- Damage player if enemy touches them.
+		if other_group == hash("players") then
+			msg.post(other_id, "touched_by_enemy")
+		end
 	end
 end
