@@ -46,3 +46,9 @@ embedded_components {
     z: 1.0
   }
 }
+embedded_components {
+  id: "sword_ability_factory"
+  type: "factory"
+  data: "prototype: \"/abilities/sword_ability/sword_ability.go\"\n"
+  ""
+}
