@@ -60,6 +60,8 @@ function init(self)
 	self.sword_ability_cooldown = self.sword_ability_base_cooldown
 	-- The modifier for the sword ability's cooldown, if any, in seconds.
 	self.sword_ability_cooldown_modifier = 0
+	-- The table of enemies in range. Use IDs for keys and positions for values.
+	self.nearby_enemies = {}
 end
 
 function update(self, dt)
@@ -72,7 +74,15 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("trigger_response") then
-		print("detected an enemy!")
+		local other_is_enemy = message.other_group == hash("enemies")
+		local other_id = message.other_id
+		if other_is_enemy and message.enter then
+			self.nearby_enemies.other_id = go.get_position(other_id)
+			print(self.nearby_enemies)
+		elseif other_is_enemy and not message.enter then
+			self.nearby_enemies.other_id = nil
+			print(self.nearby_enemies)
+		end
 	end
 end
 
