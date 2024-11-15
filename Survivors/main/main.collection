@@ -23,6 +23,46 @@ instances {
     y: 72.0
   }
 }
+instances {
+  id: "basic_enemy1"
+  prototype: "/enemies/basic_enemy.go"
+  position {
+    x: 61.0
+    y: 103.0
+  }
+}
+instances {
+  id: "basic_enemy2"
+  prototype: "/enemies/basic_enemy.go"
+  position {
+    x: 49.0
+    y: 43.0
+  }
+}
+instances {
+  id: "basic_enemy3"
+  prototype: "/enemies/basic_enemy.go"
+  position {
+    x: 30.0
+    y: 70.0
+  }
+}
+instances {
+  id: "basic_enemy4"
+  prototype: "/enemies/basic_enemy.go"
+  position {
+    x: 27.0
+    y: 114.0
+  }
+}
+instances {
+  id: "basic_enemy5"
+  prototype: "/enemies/basic_enemy.go"
+  position {
+    x: 28.0
+    y: 28.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "arena"

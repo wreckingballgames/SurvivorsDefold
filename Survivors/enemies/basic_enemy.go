@@ -5,11 +5,12 @@ components {
 embedded_components {
   id: "collisionobject"
   type: "collisionobject"
-  data: "type: COLLISION_OBJECT_TYPE_TRIGGER\n"
+  data: "type: COLLISION_OBJECT_TYPE_KINEMATIC\n"
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
   "group: \"enemies\"\n"
+  "mask: \"enemies\"\n"
   "mask: \"player_abilities\"\n"
   "mask: \"enemy_detector\"\n"
   "embedded_collision_shape {\n"
