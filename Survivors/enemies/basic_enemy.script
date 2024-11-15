@@ -1,10 +1,19 @@
 -- Properties
 go.property("move_speed", 100)
+go.property("base_hp", 5)
 
 -- Constants
+local PLAYER_URL = msg.url("main:/player")
+
+local function die()
+	go.delete()
+	msg.post(PLAYER_URL, "enemy_died", { enemy_id = go.get_id(".") })
+end
 
 function init(self)
 	self.target_position = vmath.vector3()
+	-- Set current HP to base HP
+	self.hp = self.base_hp
 end
 
 function final(self)
@@ -19,6 +28,10 @@ function update(self, dt)
 	local dv = vmath.normalize(self.target_position - position)
 	position = position + (dv * self.move_speed * dt)
 	go.set_position(position)
+
+	if self.hp <= 0 then
+		die()
+	end
 end
 
 function fixed_update(self, dt)
@@ -33,6 +46,8 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("acquire_new_target") then
 		self.target_position = message.target_position
+	elseif message_id == hash("attacked") then
+		self.hp = self.hp - message.damage
 	end
 end
 

@@ -1,3 +1,6 @@
+-- Properties
+go.property("damage", 2)
+
 local function die()
     go.delete()
 end
@@ -5,4 +8,12 @@ end
 function init()
     -- Play animation then die
     go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, 90, go.EASING_INOUTCUBIC, 0.5, 0, die)
+end
+
+function on_message(self, message_id, message, sender)
+    if message_id == hash("trigger_response") then
+        if message.other_group == hash("enemies") then
+            msg.post(message.other_id, "attacked", { damage = self.damage })
+        end
+    end
 end

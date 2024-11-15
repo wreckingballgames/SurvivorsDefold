@@ -88,6 +88,8 @@ function on_message(self, message_id, message, sender)
 		elseif other_is_enemy and not message.enter then
 			self.nearby_enemies[other_id] = nil
 		end
+	elseif message_id == hash("enemy_died") then
+		self.nearby_enemies[hash(message.enemy_id)] = nil
 	end
 end
 
