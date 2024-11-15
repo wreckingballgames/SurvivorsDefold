@@ -36,7 +36,7 @@ function fixed_update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("reposition") then
+	if message_id == hash("position_announced") then
 		self.target_position = message.position - (WINDOW_VECTOR / 2)
 	end
 end

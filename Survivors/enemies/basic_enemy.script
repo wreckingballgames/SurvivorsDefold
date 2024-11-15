@@ -7,10 +7,13 @@ local PLAYER_URL = msg.url("main:/player")
 
 local function die()
 	go.delete()
-	msg.post(PLAYER_URL, "enemy_died", { enemy_id = go.get_id(".") })
+	msg.post(PLAYER_URL, "enemy_died", { enemy_id = go.get_id(), enemy_url = msg.url() })
 end
 
 function init(self)
+	-- Tell the player this enemy exists.
+	msg.post(PLAYER_URL, "enemy_spawned", { enemy_url = msg.url() })
+
 	self.target_position = vmath.vector3()
 	-- Set current HP to base HP
 	self.hp = self.base_hp
@@ -44,8 +47,8 @@ function fixed_update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("acquire_new_target") then
-		self.target_position = message.target_position
+	if message_id == hash("position_announced") then
+		self.target_position = message.position
 	elseif message_id == hash("attacked") then
 		self.hp = self.hp - message.damage
 	end

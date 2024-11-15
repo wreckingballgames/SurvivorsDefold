@@ -10,8 +10,6 @@ go.property("enemy_detector_diameter", 60)
 
 -- Constants
 local GAME_CAMERA_URL = msg.url("main:/game_camera")
--- TODO: Dynamically get enemy URLs from messages from enemy factory
-local ENEMY_URL = msg.url("main:/basic_enemy")
 
 local function tick_ability_cooldowns(self, dt)
 	self.sword_ability_cooldown = self.sword_ability_cooldown - dt
@@ -20,8 +18,8 @@ end
 local function handle_abilities(self)
 	local target_id = go.get_id()
 	-- Get ID of an enemy if there are any nearby
-	for id, pos in pairs(self.nearby_enemies) do
-		target_id = hash(id)
+	for id, _ in pairs(self.nearby_enemies) do
+		target_id = id
 		break
 	end
 
@@ -45,10 +43,11 @@ local function move(self, dt)
 	self.direction = vmath.vector3()
 end
 
-local function announce_position()
-	local position = go.get_position()
-	msg.post(GAME_CAMERA_URL, "reposition", { position = position })
-	msg.post(ENEMY_URL, "acquire_new_target", { target_position = position })
+local function announce_position(self)
+	local position_table = { position = go.get_position() }
+	for index = 1, #self.position_listener_URLs do
+		msg.post(self.position_listener_URLs[index], "position_announced", position_table)
+	end
 end
 
 function init(self)
@@ -69,11 +68,14 @@ function init(self)
 	self.sword_ability_cooldown_modifier = 0
 	-- The table of enemies in range. Use IDs for keys and positions for values.
 	self.nearby_enemies = {}
+	-- The list of URLs to post messages about position updates to.
+	self.position_listener_URLs = {}
+	table.insert(self.position_listener_URLs, GAME_CAMERA_URL)
 end
 
 function update(self, dt)
 	move(self, dt)
-	announce_position()
+	announce_position(self)
 
 	tick_ability_cooldowns(self, dt)
 	handle_abilities(self)
@@ -88,8 +90,15 @@ function on_message(self, message_id, message, sender)
 		elseif other_is_enemy and not message.enter then
 			self.nearby_enemies[other_id] = nil
 		end
+	elseif message_id == hash("enemy_spawned") then
+		table.insert(self.position_listener_URLs, message.enemy_url)
 	elseif message_id == hash("enemy_died") then
-		self.nearby_enemies[hash(message.enemy_id)] = nil
+		for index = 1, #self.position_listener_URLs do
+			if self.position_listener_URLs[index] == message.enemy_url then
+				table.remove(self.position_listener_URLs, index)
+			end
+		end
+		self.nearby_enemies[message.enemy_id] = nil
 	end
 end
 
