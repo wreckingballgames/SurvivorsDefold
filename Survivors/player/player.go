@@ -6,6 +6,11 @@ components {
     value: "150.0"
     type: PROPERTY_TYPE_NUMBER
   }
+  properties {
+    id: "enemy_detector_diameter"
+    value: "120.0"
+    type: PROPERTY_TYPE_NUMBER
+  }
 }
 embedded_components {
   id: "collisionobject"
@@ -72,7 +77,7 @@ embedded_components {
   "    count: 1\n"
   "    id: \"sphere\"\n"
   "  }\n"
-  "  data: 30.0\n"
+  "  data: 60.0\n"
   "}\n"
   ""
 }
