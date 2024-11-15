@@ -58,15 +58,15 @@ end
 
 local function announce_position(self)
 	local position_table = { position = go.get_position() }
-	for index = 1, #self.position_listener_URLs do
-		msg.post(self.position_listener_URLs[index], "position_announced", position_table)
+	for _, url in pairs(self.position_listener_URLs) do
+		msg.post(url, "position_announced", position_table)
 	end
 end
 
 local function die(self)
 	go.delete()
-	for index = 1, #self.death_listener_URLs do
-		msg.post(self.death_listener_URLs[index], "player_died")
+	for _, url in pairs(self.death_listener_URLs) do
+		msg.post(url, "player_died")
 	end
 end
 
@@ -94,10 +94,10 @@ function init(self)
 	self.nearby_enemies = {}
 	-- The list of URLs to post messages about position updates to.
 	self.position_listener_URLs = {}
-	table.insert(self.position_listener_URLs, GAME_CAMERA_URL)
+	self.position_listener_URLs[hash(GAME_CAMERA_URL.path)] = GAME_CAMERA_URL
 	-- The list of URLs to post death message to.
 	self.death_listener_URLs = {}
-	table.insert(self.death_listener_URLs, GAME_CAMERA_URL)
+	self.death_listener_URLs[hash(GAME_CAMERA_URL.path)] = GAME_CAMERA_URL
 	-- Set starting HP.
 	self.hp = self.base_hp
 	-- How much damage touching enemies causes.
@@ -119,7 +119,7 @@ end
 function on_message(self, message_id, message, sender)
 	if message_id == hash("trigger_response") then
 		local other_is_enemy = message.other_group == hash("enemies")
-		local other_id = message.other_id
+		local other_id = hash(message.other_id)
 		local own_group = message.own_group
 
 		-- Handle enemy detection
@@ -129,15 +129,14 @@ function on_message(self, message_id, message, sender)
 			self.nearby_enemies[other_id] = nil
 		end
 	elseif message_id == hash("enemy_spawned") then
-		table.insert(self.position_listener_URLs, message.enemy_url)
-		table.insert(self.death_listener_URLs, message.enemy_url)
+		local enemy_id = hash(message.enemy_url.path)
+		self.position_listener_URLs[enemy_id] = message.enemy_url
+		self.death_listener_URLs[enemy_id] = message.enemy_url
 	elseif message_id == hash("enemy_died") then
-		for index = 1, #self.position_listener_URLs do
-			if self.position_listener_URLs[index] == message.enemy_url then
-				table.remove(self.position_listener_URLs, index)
-			end
-		end
+		-- Remove dead enemy from tables.
 		self.nearby_enemies[message.enemy_id] = nil
+		self.position_listener_URLs[message.enemy_id] = nil
+		self.death_listener_URLs[message.enemy_id] = nil
 	elseif message_id == hash("touched_by_enemy") then
 		take_damage(self, self.enemy_touch_damage)
 	end
