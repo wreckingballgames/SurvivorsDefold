@@ -14,3 +14,11 @@ animations {
   playback: PLAYBACK_LOOP_FORWARD
   fps: 0
 }
+animations {
+  id: "sword"
+  images {
+    image: "/assets/graphics/sprites/sword.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 0
+}
