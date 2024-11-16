@@ -1,0 +1,6 @@
+-- Game time limit in minutes.
+go.property("time_limit", 10)
+
+function init(self)
+	msg.post("#game_timer", "time_limit_set", { time_limit = self.time_limit })
+end

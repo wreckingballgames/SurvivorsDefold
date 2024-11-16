@@ -24,10 +24,8 @@ local function update_timer_text(self)
 end
 
 function init(self)
-	-- Game time limit in minutes.
-	self.time_limit = 10
-	-- Time remaining in seconds.
-	self.time_remaining = self.time_limit * 60
+	-- Initialize time remaining with a minute for the time limit to be set.
+	self.time_remaining = 60
 	-- Time elapsed in seconds.
 	self.time_elapsed = 0
 end
@@ -57,9 +55,11 @@ function fixed_update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
+	if message_id == hash("time_limit_set") then
+		-- Accept time limit in minutes and set time remaining in seconds.
+		self.time_remaining = message.time_limit * 60
+		print(self.time_remaining)
+	end
 end
 
 function on_input(self, action_id, action)
