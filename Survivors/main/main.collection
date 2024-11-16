@@ -51,6 +51,10 @@ instances {
     y: 59.0
   }
 }
+instances {
+  id: "game_timer"
+  prototype: "/game_timer/game_timer.go"
+}
 scale_along_z: 0
 embedded_instances {
   id: "arena"
