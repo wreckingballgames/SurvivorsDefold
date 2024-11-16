@@ -105,15 +105,15 @@ function init(self)
 end
 
 function update(self, dt)
+	if self.hp <= 0 then
+		die(self)
+	end
+
 	move(self, dt)
 	announce_position(self)
 
 	tick_ability_cooldowns(self, dt)
 	handle_abilities(self)
-
-	if self.hp <= 0 then
-		die(self)
-	end
 end
 
 function on_message(self, message_id, message, sender)
