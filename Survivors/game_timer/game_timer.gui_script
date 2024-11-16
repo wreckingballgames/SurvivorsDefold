@@ -1,16 +1,24 @@
 local function tick_game_time(self, dt)
 	self.time_remaining = self.time_remaining - dt
+	self.time_elapsed = self.time_elapsed + dt
 end
 
 local function update_timer_text(self)
 	local timer_text_node = gui.get_node("timer_text")
 	local timer_text_content = ""
-	local minutes = math.floor(self.time_remaining / 60)
-	local seconds = math.floor(self.time_remaining % 60)
+	local minutes = math.floor(self.time_elapsed / 60)
+	local seconds = math.floor(self.time_elapsed % 60)
+
+	timer_text_content = minutes .. ":"
+
+	if minutes < 10 then
+		timer_text_content = "0" .. timer_text_content
+	end
+
 	if seconds < 10 then
-		timer_text_content = minutes .. ":" .. "0" .. seconds
+		timer_text_content = timer_text_content .. "0" .. seconds
 	else
-		timer_text_content = minutes .. ":" .. seconds
+		timer_text_content = timer_text_content .. seconds
 	end
 	gui.set_text(timer_text_node, timer_text_content)
 end
@@ -20,6 +28,8 @@ function init(self)
 	self.time_limit = 10
 	-- Time remaining in seconds.
 	self.time_remaining = self.time_limit * 60
+	-- Time elapsed in seconds.
+	self.time_elapsed = 0
 end
 
 function final(self)
