@@ -118,14 +118,13 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("trigger_response") then
-		local other_is_enemy = message.other_group == hash("enemies")
+		local is_enemy_detected = message.own_group == hash("enemy_detector") and message.other_group == hash("enemies")
 		local other_id = hash(message.other_id)
-		local own_group = message.own_group
 
 		-- Handle enemy detection
-		if own_group == hash("enemy_detector") and other_is_enemy and message.enter then
+		if is_enemy_detected and message.enter then
 			self.nearby_enemies[other_id] = go.get_position(other_id)
-		elseif own_group == hash("enemy_detector") and other_is_enemy and not message.enter then
+		elseif is_enemy_detected and not message.enter then
 			self.nearby_enemies[other_id] = nil
 		end
 	elseif message_id == hash("enemy_spawned") then
