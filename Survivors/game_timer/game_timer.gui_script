@@ -58,7 +58,6 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("time_limit_set") then
 		-- Accept time limit in minutes and set time remaining in seconds.
 		self.time_remaining = message.time_limit * 60
-		print(self.time_remaining)
 	end
 end
 
