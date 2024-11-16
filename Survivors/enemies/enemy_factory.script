@@ -1,0 +1,73 @@
+-- Properties
+-- Base time between basic enemy spawns in seconds.
+go.property("base_basic_enemy_spawn_cooldown", 3)
+
+-- Constants
+local BASIC_ENEMY_FACTORY_URL = "#basic_enemy_factory"
+
+local function tick_spawn_cooldowns(self, dt)
+	self.basic_enemy_spawn_cooldown = self.basic_enemy_spawn_cooldown - dt
+end
+
+local function reset_spawn_cooldowns(self)
+	self.basic_enemy_spawn_cooldown = self.base_basic_enemy_spawn_cooldown
+end
+
+local function spawn_enemy(self, factory_url)
+	-- Post message to appropriate factory to spawn its enemy at a random spawn location.
+	factory.create(factory_url, self.spawn_points[math.random(#self.spawn_points)])
+end
+
+function init(self)
+	-- Store array of all spawn points in world.
+	self.spawn_points = {}
+	-- Initialize spawn cooldowns.
+	reset_spawn_cooldowns(self)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	tick_spawn_cooldowns(self, dt)
+	if self.basic_enemy_spawn_cooldown <= 0 then
+		spawn_enemy(self, BASIC_ENEMY_FACTORY_URL)
+		self.basic_enemy_spawn_cooldown = self.base_basic_enemy_spawn_cooldown
+	end
+end
+
+function fixed_update(self, dt)
+	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
+	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
+	-- Physics section of game.project
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("spawn_point_located") then
+		table.insert(self.spawn_points, message.spawn_position)
+	end
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

@@ -1,0 +1,6 @@
+-- Constants
+local ENEMY_FACTORY_URL = msg.url("main:/enemy_factory")
+
+function init(self)
+	msg.post(ENEMY_FACTORY_URL, "spawn_point_located", { spawn_point_id = go.get_id(), spawn_position = go.get_position() })
+end
