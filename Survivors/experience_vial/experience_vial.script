@@ -1,0 +1,20 @@
+-- Properties
+-- How much experience the vial is worth.
+go.property("experience_value", 1)
+
+-- Constants
+local PLAYER_URL = msg.url("main:/player")
+
+local function expire(self)
+	go.delete()
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("trigger_response") then
+		-- If player collided, inform player of experience pickup
+		if message.other_group == hash("players") then
+			msg.post(PLAYER_URL, "experience_vial_picked_up", { experience = self.experience_value })
+			expire(self)
+		end
+	end
+end

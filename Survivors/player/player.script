@@ -74,6 +74,10 @@ local function take_damage(self, damage)
 	self.hp = self.hp - damage
 end
 
+local function gain_experience(self, experience)
+	self.experience = self.experience + experience
+end
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
@@ -102,6 +106,8 @@ function init(self)
 	self.hp = self.base_hp
 	-- How much damage touching enemies causes.
 	self.enemy_touch_damage = 1
+	-- How much experience the player currently has.
+	self.experience = 0
 end
 
 function update(self, dt)
@@ -138,6 +144,8 @@ function on_message(self, message_id, message, sender)
 		self.death_listener_URLs[message.enemy_id] = nil
 	elseif message_id == hash("touched_by_enemy") then
 		take_damage(self, self.enemy_touch_damage)
+	elseif message_id == hash("experience_vial_picked_up") then
+		gain_experience(self, message.experience)
 	end
 end
 

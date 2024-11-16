@@ -1,3 +1,7 @@
+components {
+  id: "experience_vial"
+  component: "/experience_vial/experience_vial.script"
+}
 embedded_components {
   id: "sprite"
   type: "sprite"
