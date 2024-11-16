@@ -55,6 +55,14 @@ instances {
   id: "game_timer"
   prototype: "/game_timer/game_timer.go"
 }
+instances {
+  id: "experience_vial"
+  prototype: "/experience_vial/experience_vial.go"
+  position {
+    x: 275.0
+    y: 144.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "arena"

@@ -8,6 +8,9 @@ embedded_components {
   "  texture: \"/main/sprites.atlas\"\n"
   "}\n"
   ""
+  position {
+    z: 1.0
+  }
 }
 embedded_components {
   id: "collisionobject"
