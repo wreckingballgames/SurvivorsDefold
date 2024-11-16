@@ -22,6 +22,7 @@ embedded_components {
   "group: \"players\"\n"
   "mask: \"terrain\"\n"
   "mask: \"enemies\"\n"
+  "mask: \"pickups\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_SPHERE\n"

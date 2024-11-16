@@ -22,3 +22,11 @@ animations {
   playback: PLAYBACK_LOOP_FORWARD
   fps: 0
 }
+animations {
+  id: "experience_vial"
+  images {
+    image: "/assets/graphics/sprites/experience_vial.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 0
+}
