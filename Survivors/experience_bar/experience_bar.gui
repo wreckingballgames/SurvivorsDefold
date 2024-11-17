@@ -27,7 +27,6 @@ nodes {
   position {
     x: 132.0
     y: 32.0
-    z: 0.5
   }
   size {
     x: 375.0
@@ -45,7 +44,6 @@ nodes {
   position {
     x: 320.0
     y: 32.0
-    z: 1.0
   }
   scale {
     x: 0.5
