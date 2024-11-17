@@ -25,6 +25,7 @@ embedded_components {
   "restitution: 0.5\n"
   "group: \"pickups\"\n"
   "mask: \"players\"\n"
+  "mask: \"pickup_detector\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_SPHERE\n"

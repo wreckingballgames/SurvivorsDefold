@@ -1,6 +1,8 @@
 -- Properties
 -- How much experience the vial is worth.
 go.property("experience_value", 1)
+-- The speed the exprience vial flies when being drawn in.
+go.property("move_speed", 10)
 
 -- Constants
 local PLAYER_URL = msg.url("main:/player")
@@ -9,10 +11,33 @@ local function expire(self)
 	go.delete()
 end
 
+local function fly(self, dt)
+	if self.is_being_drawn_in then
+		local position = go.get_position()
+		local dv = go.get_position(self.target_id) - position
+		go.set_position(position + dv * self.move_speed * dt)
+	end
+end
+
+function init(self)
+	-- The id of the object to fly toward when being drawn in.
+	self.target_id = nil
+	-- Whether the experience vial is being drawn in currently.
+	self.is_being_drawn_in = false
+end
+
+function update(self, dt)
+	fly(self, dt)
+end
+
 function on_message(self, message_id, message, sender)
 	if message_id == hash("trigger_response") then
+		-- If player's pickup detector collided, fly toward player
+		if message.other_group == hash("pickup_detector") and message.enter then
+			self.target_id = hash(message.other_id)
+			self.is_being_drawn_in = true
 		-- If player collided, inform player of experience pickup
-		if message.other_group == hash("players") then
+		elseif message.other_group == hash("players") then
 			msg.post(PLAYER_URL, "experience_vial_picked_up", { experience = self.experience_value })
 			expire(self)
 		end

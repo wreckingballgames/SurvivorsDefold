@@ -5,8 +5,6 @@ go.property("move_speed", 250)
 go.property("has_sword_ability", true)
 -- The sword ability's starting cooldown in seconds.
 go.property("sword_ability_base_cooldown", 3)
--- The diameter of the collision shape (a sphere) used to detect enemies in range. Change on the collision shape to preview.
-go.property("enemy_detector_diameter", 60)
 -- The player's base max HP.
 go.property("base_hp", 15)
 
@@ -80,13 +78,6 @@ end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-
-	-- Set enemy detector's collision shape diameter.
-	local sphere_data = {
-		type = physics.SHAPE_TYPE_SPHERE,
-		diameter = self.enemy_detector_diameter,
-	}
-	physics.set_shape("#enemy_detector", "sphere", sphere_data)
 
 	-- The direction the player is facing.
 	self.direction = vmath.vector3()

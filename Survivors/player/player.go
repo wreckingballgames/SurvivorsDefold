@@ -6,11 +6,6 @@ components {
     value: "150.0"
     type: PROPERTY_TYPE_NUMBER
   }
-  properties {
-    id: "enemy_detector_diameter"
-    value: "120.0"
-    type: PROPERTY_TYPE_NUMBER
-  }
 }
 embedded_components {
   id: "collisionobject"
@@ -82,5 +77,29 @@ embedded_components {
   "  data: 60.0\n"
   "}\n"
   "locked_rotation: true\n"
+  ""
+}
+embedded_components {
+  id: "pickup_detector"
+  type: "collisionobject"
+  data: "type: COLLISION_OBJECT_TYPE_TRIGGER\n"
+  "mass: 0.0\n"
+  "friction: 0.1\n"
+  "restitution: 0.5\n"
+  "group: \"pickup_detector\"\n"
+  "mask: \"pickups\"\n"
+  "embedded_collision_shape {\n"
+  "  shapes {\n"
+  "    shape_type: TYPE_SPHERE\n"
+  "    position {\n"
+  "    }\n"
+  "    rotation {\n"
+  "    }\n"
+  "    index: 0\n"
+  "    count: 1\n"
+  "    id: \"sphere\"\n"
+  "  }\n"
+  "  data: 60.0\n"
+  "}\n"
   ""
 }
