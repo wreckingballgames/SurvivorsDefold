@@ -1,6 +1,45 @@
 -- Game time limit in minutes.
 go.property("time_limit", 10)
 
+local function tick_game_time(self, dt)
+	self.time_remaining = self.time_remaining - dt
+	self.time_elapsed = self.time_elapsed + dt
+end
+
+local function update_timer_text(self)
+	local timer_text_content = ""
+	local minutes = math.floor(self.time_elapsed / 60)
+	local seconds = math.floor(self.time_elapsed % 60)
+
+	timer_text_content = minutes .. ":"
+
+	if minutes < 10 then
+		timer_text_content = "0" .. timer_text_content
+	end
+
+	if seconds < 10 then
+		timer_text_content = timer_text_content .. "0" .. seconds
+	else
+		timer_text_content = timer_text_content .. seconds
+	end
+
+	msg.post("#game_timer", "timer_text_updated", { new_text = timer_text_content })
+end
+
 function init(self)
+	-- Set live time countdown.
+	self.time_remaining = self.time_limit
+	-- Time elapsed in seconds.
+	self.time_elapsed = 0
+
 	msg.post("#game_timer", "time_limit_set", { time_limit = self.time_limit })
+end
+
+function update(self, dt)
+	tick_game_time(self, dt)
+	update_timer_text(self)
+
+	if self.time_remaining <= 0 then
+
+	end
 end
