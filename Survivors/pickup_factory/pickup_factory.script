@@ -1,8 +1,14 @@
+-- Properties
+-- The percentage chance to drop an experience vial when an enemy dies.
+go.property("experience_vial_drop_chance", 0.6)
+
 -- Constants
 local EXPERIENCE_VIAL_FACTORY = "#experience_vial_factory"
 
 local function spawn_experience_vial(self, position)
-	factory.create(EXPERIENCE_VIAL_FACTORY, position)
+	if math.random() <= self.experience_vial_drop_chance then
+		factory.create(EXPERIENCE_VIAL_FACTORY, position)
+	end
 end
 
 function on_message(self, message_id, message, sender)
