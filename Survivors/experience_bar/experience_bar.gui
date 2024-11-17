@@ -1,0 +1,41 @@
+script: "/experience_bar/experience_bar.gui_script"
+nodes {
+  position {
+    x: 320.0
+    y: 32.0
+  }
+  size {
+    x: 400.0
+    y: 10.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "bar_background"
+  inherit_alpha: true
+  alpha: 0.2
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 132.0
+    y: 32.0
+    z: 1.0
+  }
+  size {
+    x: 375.0
+    y: 5.0
+  }
+  color {
+    x: 0.0
+  }
+  type: TYPE_BOX
+  id: "bar"
+  pivot: PIVOT_W
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

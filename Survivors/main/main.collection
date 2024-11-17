@@ -3,8 +3,8 @@ instances {
   id: "player"
   prototype: "/player/player.go"
   position {
-    x: 233.0
-    y: 144.0
+    x: 137.0
+    y: 145.0
   }
 }
 instances {
@@ -66,6 +66,10 @@ instances {
 instances {
   id: "pickup_factory"
   prototype: "/pickups/pickup_factory/pickup_factory.go"
+}
+instances {
+  id: "experience_bar"
+  prototype: "/experience_bar/experience_bar.go"
 }
 scale_along_z: 0
 embedded_instances {

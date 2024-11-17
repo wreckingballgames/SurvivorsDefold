@@ -1,0 +1,44 @@
+-- Constants
+local MAX_BAR_WIDTH = 375
+local MAX_EXPERIENCE = 100
+
+local function update_experience_bar(self, experience)
+	local bar_size = gui.get_size(self.bar)
+	-- Use experience up to 100 to scale bar
+	-- Bar width is 375 px at max, so 1 experience is 37.5 px width added
+	bar_size.x = (experience % MAX_EXPERIENCE) * (MAX_BAR_WIDTH / MAX_EXPERIENCE)
+	gui.set_size(self.bar, bar_size)
+end
+
+function init(self)
+	-- The bar node used for drawing the player's experience.
+	self.bar = gui.get_node("bar")
+	-- Initialize bar size.
+	local bar_size = gui.get_size(self.bar)
+	bar_size.x = 0
+	gui.set_size(self.bar, bar_size)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("experience_updated") then
+		update_experience_bar(self, message.experience)
+	end
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

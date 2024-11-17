@@ -10,6 +10,7 @@ go.property("base_hp", 15)
 
 -- Constants
 local GAME_CAMERA_URL = msg.url("main:/game_camera")
+local EXPERIENCE_BAR_URL = msg.url("main:/experience_bar")
 
 local function tick_ability_cooldowns(self, dt)
 	self.sword_ability_cooldown = self.sword_ability_cooldown - dt
@@ -74,6 +75,7 @@ end
 
 local function gain_experience(self, experience)
 	self.experience = self.experience + experience
+	msg.post(EXPERIENCE_BAR_URL, "experience_updated", { experience = self.experience })
 end
 
 function init(self)
