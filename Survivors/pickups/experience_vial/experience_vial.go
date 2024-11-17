@@ -1,6 +1,6 @@
 components {
   id: "experience_vial"
-  component: "/experience_vial/experience_vial.script"
+  component: "/pickups/experience_vial/experience_vial.script"
 }
 embedded_components {
   id: "sprite"
@@ -9,7 +9,7 @@ embedded_components {
   "material: \"/builtins/materials/sprite.material\"\n"
   "textures {\n"
   "  sampler: \"texture_sampler\"\n"
-  "  texture: \"/main/sprites.atlas\"\n"
+  "  texture: \"/assets/graphics/sprites/sprites.atlas\"\n"
   "}\n"
   ""
   position {

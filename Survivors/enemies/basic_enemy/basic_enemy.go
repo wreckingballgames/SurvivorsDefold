@@ -1,6 +1,6 @@
 components {
   id: "basic_enemy"
-  component: "/enemies/basic_enemy.script"
+  component: "/enemies/basic_enemy/basic_enemy.script"
 }
 embedded_components {
   id: "collisionobject"
@@ -36,7 +36,7 @@ embedded_components {
   "material: \"/builtins/materials/sprite.material\"\n"
   "textures {\n"
   "  sampler: \"texture_sampler\"\n"
-  "  texture: \"/main/sprites.atlas\"\n"
+  "  texture: \"/assets/graphics/sprites/sprites.atlas\"\n"
   "}\n"
   ""
   position {
