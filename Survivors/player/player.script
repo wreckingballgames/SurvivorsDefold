@@ -33,7 +33,7 @@ local function sort_nearby_enemies(self)
 end
 
 local function handle_abilities(self)
-	local target_id = go.get_id()
+	local target_id = nil
 	-- Get ID of an enemy if there are any nearby
 	sort_nearby_enemies(self)
 	for id, _ in pairs(self.nearby_enemies) do
@@ -42,7 +42,7 @@ local function handle_abilities(self)
 	end
 
 	-- Sword ability
-	if self.sword_ability_cooldown <= 0 and self.has_sword_ability then
+	if target_id and self.sword_ability_cooldown <= 0 and self.has_sword_ability then
 		factory.create("#sword_ability_factory", go.get_position(target_id))
 		self.sword_ability_cooldown = self.sword_ability_base_cooldown + self.sword_ability_cooldown_modifier
 	end
