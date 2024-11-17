@@ -4,10 +4,13 @@ go.property("base_hp", 5)
 
 -- Constants
 local PLAYER_URL = msg.url("main:/player")
+local PICKUP_FACTORY_URL = msg.url("main:/pickup_factory")
 
-local function die()
+local function die(self)
 	go.delete()
-	msg.post(PLAYER_URL, "enemy_died", { enemy_id = go.get_id(), enemy_url = msg.url() })
+	for _, url in pairs(self.enemy_died_listener_URLs) do
+		msg.post(url, "enemy_died", { enemy_id = go.get_id(), enemy_url = msg.url(), enemy_position = go.get_position() })
+	end
 end
 
 function init(self)
@@ -19,6 +22,10 @@ function init(self)
 	self.hp = self.base_hp
 	-- Correction vector for collision resolution.
 	self.correction = vmath.vector3()
+	-- The array of all listeners interested in knowing an enemy has died.
+	self.enemy_died_listener_URLs = {}
+	table.insert(self.enemy_died_listener_URLs, PLAYER_URL)
+	table.insert(self.enemy_died_listener_URLs, PICKUP_FACTORY_URL)
 end
 
 function update(self, dt)
@@ -29,7 +36,7 @@ function update(self, dt)
 	go.set_position(position)
 
 	if self.hp <= 0 then
-		die()
+		die(self)
 	end
 
 	-- Reset correction vector
