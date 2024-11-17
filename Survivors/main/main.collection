@@ -56,14 +56,6 @@ instances {
   prototype: "/game_timer/game_timer.go"
 }
 instances {
-  id: "experience_vial"
-  prototype: "/pickups/experience_vial/experience_vial.go"
-  position {
-    x: 275.0
-    y: 144.0
-  }
-}
-instances {
   id: "pickup_factory"
   prototype: "/pickups/pickup_factory/pickup_factory.go"
 }

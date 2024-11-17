@@ -7,6 +7,12 @@ go.property("has_sword_ability", true)
 go.property("sword_ability_base_cooldown", 3)
 -- The player's base max HP.
 go.property("base_hp", 15)
+-- How much experience the player must collect to level up.
+go.property("experience_max", 100)
+-- What level the player starts at.
+go.property("starting_level", 1)
+-- The level cap.
+go.property("level_cap", 100)
 
 -- Constants
 local GAME_CAMERA_URL = msg.url("main:/game_camera")
@@ -73,13 +79,22 @@ local function take_damage(self, damage)
 	self.hp = self.hp - damage
 end
 
+local function level_up(self, experience)
+	self.level = math.min(self.level + 1, self.level_cap)
+end
+
 local function gain_experience(self, experience)
 	self.experience = self.experience + experience
-	msg.post(EXPERIENCE_BAR_URL, "experience_updated", { experience = self.experience })
+	if self.experience >= self.experience_max then
+		level_up(self, experience)
+	end
+	msg.post(EXPERIENCE_BAR_URL, "experience_updated", { experience = self.experience, level = self.level })
 end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
+	-- Notify the experience bar what the experience max is so it can draw the bar correctly.
+	msg.post(EXPERIENCE_BAR_URL, "set_experience_max", { experience_max = self.experience_max })
 
 	-- The direction the player is facing.
 	self.direction = vmath.vector3()
@@ -101,6 +116,8 @@ function init(self)
 	self.enemy_touch_damage = 1
 	-- How much experience the player currently has.
 	self.experience = 0
+	-- The player's experience level.
+	self.level = self.starting_level
 end
 
 function update(self, dt)

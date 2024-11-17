@@ -1,18 +1,22 @@
 -- Constants
 local MAX_BAR_WIDTH = 375
-local MAX_EXPERIENCE = 100
 
-local function update_experience_bar(self, experience)
+local function update_experience_bar(self, experience, level)
 	local bar_size = gui.get_size(self.bar)
 	-- Use experience up to 100 to scale bar
 	-- Bar width is 375 px at max, so 1 experience is 37.5 px width added
-	bar_size.x = (experience % MAX_EXPERIENCE) * (MAX_BAR_WIDTH / MAX_EXPERIENCE)
+	bar_size.x = (experience % self.experience_max) * (MAX_BAR_WIDTH / self.experience_max)
 	gui.set_size(self.bar, bar_size)
+	gui.set_text(self.level_text, level)
 end
 
 function init(self)
+	-- The max experience to be drawn.
+	self.experience_max = 0
 	-- The bar node used for drawing the player's experience.
 	self.bar = gui.get_node("bar")
+	-- The text that displays the player's level.
+	self.level_text = gui.get_node("level_text")
 	-- Initialize bar size.
 	local bar_size = gui.get_size(self.bar)
 	bar_size.x = 0
@@ -21,7 +25,9 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("experience_updated") then
-		update_experience_bar(self, message.experience)
+		update_experience_bar(self, message.experience, message.level)
+	elseif message_id == hash("set_experience_max") then
+		self.experience_max = message.experience_max
 	end
 end
 

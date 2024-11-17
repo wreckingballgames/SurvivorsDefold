@@ -1,4 +1,8 @@
 script: "/experience_bar/experience_bar.gui_script"
+fonts {
+  name: "default"
+  font: "/builtins/fonts/default.font"
+}
 nodes {
   position {
     x: 320.0
@@ -23,7 +27,7 @@ nodes {
   position {
     x: 132.0
     y: 32.0
-    z: 1.0
+    z: 0.5
   }
   size {
     x: 375.0
@@ -35,6 +39,26 @@ nodes {
   type: TYPE_BOX
   id: "bar"
   pivot: PIVOT_W
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 320.0
+    y: 32.0
+    z: 1.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1"
+  font: "default"
+  id: "level_text"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
